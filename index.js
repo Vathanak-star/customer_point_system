@@ -18,6 +18,9 @@ app.use(bodyParser.json());
 
 app.use('/api/auth',authRoutes);
 app.use('/api',customerRoutes);
+app.get('/',(req,res) => {
+    res.send("Customer-point-system")
+})
 
 app.listen(process.env.PORT, async () => {
     console.log(`Server started at port: ${process.env.PORT}`)
