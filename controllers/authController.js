@@ -99,10 +99,18 @@ exports.login = async (req,res) => {
     const {email,password} = req.body;
 
     try {
-        const user = await User.findOne({where: {email}});
+        const user = await User.findOne({where: {email: email}});
+
+        if(!user){
+            return res.status(401).json({
+                status: 'error',
+                msg: 'Email not found',
+                errors: [{msg: "Invalid credentails"}]
+            })
+        }
 
         const hashPasswordValidation = await hashValidation(password,user.password)
-        if(!user || !hashPasswordValidation){
+        if(!hashPasswordValidation){
             return res.status(404).json({
                 status: 'error',
                 msg: 'Invalid credentials',
