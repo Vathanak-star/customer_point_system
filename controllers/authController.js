@@ -8,11 +8,19 @@ require('dotenv').config()
 const User = db.User;
 const saltRound = 10;
 
+exports.validateToken = async (req,res) => {
+    return res.status(201).json({
+        status: 'success',
+        msg: 'token Validated'
+    })
+}
+
 exports.user = async (req,res) => {
         try {
             const user = await User.findAll();
     
             return res.status(201).json({
+                status: 'success',
                 data: user
             })
         } catch (error) {
