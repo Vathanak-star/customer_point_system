@@ -17,7 +17,9 @@ exports.validateToken = async (req,res) => {
 
 exports.user = async (req,res) => {
         try {
-            const user = await User.findAll();
+            const user = await User.findAll({
+                attributes: {exclude: ['password']}
+            });
     
             return res.status(201).json({
                 status: 'success',

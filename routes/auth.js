@@ -7,7 +7,7 @@ const router = Router();
 router.post('/register', validateRegister, register);
 router.post('/login', ValidateLogin, login);
 
-router.get('/user',authenticateJWT,user);
+router.get('/user',user);
 //Validate client side token
 router.get('/token',authenticateJWT,validateToken);
 

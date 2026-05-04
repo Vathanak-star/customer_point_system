@@ -1,6 +1,7 @@
 const { where } = require('sequelize')
 const db = require('../models')
 const Customer = db.Customer
+const date = require('date-and-time')
 
 exports.customer = async (req,res) => {
     try {
@@ -133,6 +134,9 @@ exports.deleteCustomer = async (req,res) => {
 
 exports.incrementPoint = async (req,res) => {
     const {id} = req.params;
+    const point = Number.parseInt(req.query.point) || 1;
+    const now = new Date()
+    const formatted = date.format(now,'DD-MMMM-YYYY')
 
     try {
         const customer = await Customer.findOne({where: {id: id}});
@@ -144,7 +148,8 @@ exports.incrementPoint = async (req,res) => {
         }
 
         const value = {
-            point: customer.point + 1
+            point: customer.point + point,
+            date: formatted
         }
 
         const condition = {
@@ -163,7 +168,8 @@ exports.incrementPoint = async (req,res) => {
             status: 'success',
             msg: 'Customer point updated successfully',
             point: value.point,
-            data: updatedPoint[0]
+            data: updatedPoint[0],
+            date: formatted
         })
     } catch (error) {
         console.error(error);
@@ -177,6 +183,7 @@ exports.incrementPoint = async (req,res) => {
 
 exports.decrementPoint = async (req,res) => {
     const {id} = req.params;
+    const point = Number.parseInt(req.query.point) || 1;
 
     try {
         const customer = await Customer.findOne({where: {id: id}});
@@ -188,7 +195,7 @@ exports.decrementPoint = async (req,res) => {
         }
 
         const value = {
-            point: customer.point - 1
+            point: customer.point - point,
         }
 
         const condition = {
@@ -207,7 +214,7 @@ exports.decrementPoint = async (req,res) => {
             status: 'success',
             msg: 'Customer point updated successfully',
             point: value.point,
-            data: updatedPoint[0]
+            data: updatedPoint[0],
         })
     } catch (error) {
         console.error(error);
